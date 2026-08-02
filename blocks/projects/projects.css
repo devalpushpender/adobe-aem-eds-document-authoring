@@ -1,0 +1,97 @@
+.projects.block {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: var(--section-padding-block) var(--section-padding-inline);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.projects-header h2 {
+  margin: 0 0 8px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 36px;
+  color: var(--color-ink-900);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.projects.block.two-up .projects-grid { grid-template-columns: repeat(2, 1fr); }
+
+.project-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 32px;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: box-shadow .2s ease;
+}
+
+.project-card:hover { box-shadow: 0 4px 12px rgb(15 23 42 / 8%); }
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 4px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--color-brand-blue);
+}
+
+.project-card.is-blue::before { background: var(--color-brand-blue); }
+.project-card.is-green::before { background: var(--color-success); }
+.project-card.is-purple::before { background: var(--color-purple); }
+.project-card.is-orange::before { background: var(--color-warning); }
+
+.project-card h3 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--color-ink-900);
+}
+
+.project-card p {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-ink-600);
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.project-tags li {
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--color-surface);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-ink-600);
+}
+
+@media (width <= 1100px) {
+  .projects-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (width <= 700px) {
+  .projects-grid { grid-template-columns: 1fr; }
+}

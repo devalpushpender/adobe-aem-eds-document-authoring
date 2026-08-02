@@ -323,3 +323,54 @@ main .section.highlight {
   margin: 0;
   padding: 40px 0;
 }
+
+/* ==========================================================================
+   Design tokens extracted from the Figma Make export.
+   Add these custom properties to the project's global /styles/styles.css
+   (inside :root) so every block below can reference them consistently.
+   ========================================================================== */
+:root {
+  /* Color */
+  --color-brand-blue: #2563eb;
+  --color-brand-blue-hover: #1d4ed8;
+  --color-brand-blue-active: #1e40af;
+  --color-brand-blue-tint: #eff6ff;
+  --color-ink-900: #0f172a;      /* headings */
+  --color-ink-600: #475569;      /* body text */
+  --color-ink-slate-500: #64748b;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-purple: #8b5cf6;
+  --color-terminal-bg: #0f172a;
+  --color-terminal-header: #1e293b;
+  --color-terminal-border: #334155;
+  --color-terminal-muted: #94a3b8;
+  --color-terminal-text: #e2e8f0;
+  --color-terminal-comment: #64748b;
+  --color-terminal-string: #10b981;
+  --color-terminal-keyword: #f472b6;
+  --color-terminal-import: #38bdf8;
+
+  /* Type */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Geist', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+
+  /* Radius / spacing shared across cards & buttons */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --section-padding-inline: 80px;
+  --section-padding-block: 100px;
+}
+
+@media (width <= 900px) {
+  :root {
+    --section-padding-inline: 24px;
+    --section-padding-block: 56px;
+  }
+}

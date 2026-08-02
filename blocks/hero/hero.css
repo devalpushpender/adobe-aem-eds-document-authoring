@@ -1,37 +1,152 @@
-.hero-container .hero-wrapper {
-  max-width: unset;
-  padding: 0;
+.hero.block {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  padding: var(--section-padding-block) var(--section-padding-inline);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
 }
 
-.hero {
-  position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+.hero-copy {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
 }
 
-.hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
+.hero-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: var(--color-brand-blue-tint);
+  color: var(--color-brand-blue);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 12px;
 }
 
-.hero picture {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
+.hero-copy h1 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 56px;
+  line-height: 1.1;
+  color: var(--color-ink-900);
 }
 
-.hero img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
+.hero-subheading {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 24px;
+  color: var(--color-brand-blue);
 }
 
-@media (width >= 900px) {
-  .hero {
-    padding: 40px 32px;
-  }
+.hero-description {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--color-ink-600);
+}
+
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+.hero-actions .button {
+  display: inline-flex;
+  padding: 14px 24px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+.hero-actions .button.primary { background: var(--color-brand-blue); color: #fff; border: 2px solid var(--color-brand-blue); }
+.hero-actions .button.primary:hover { background: var(--color-brand-blue-hover); }
+.hero-actions .button.secondary { background: transparent; color: var(--color-brand-blue); border: 2px solid var(--color-brand-blue); }
+.hero-actions .button.secondary:hover { background: var(--color-brand-blue-tint); }
+
+.hero-terminal {
+  flex: 0 0 520px;
+  width: 520px;
+  max-width: 100%;
+  height: 380px;
+  background: var(--color-terminal-bg);
+  border: 1px solid var(--color-terminal-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 24px rgb(15 23 42 / 10%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-terminal--image { padding: 0; }
+.hero-terminal--image img { width: 100%; height: 100%; object-fit: cover; }
+
+.hero-terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  padding: 0 16px;
+  background: var(--color-terminal-header);
+  flex: 0 0 auto;
+}
+
+.hero-terminal-dots { display: flex; gap: 8px; }
+.hero-terminal-dots i {
+  width: 12px; height: 12px; border-radius: 50%; display: block;
+}
+.hero-terminal-dots i:nth-child(1) { background: #ef4444; }
+.hero-terminal-dots i:nth-child(2) { background: #f59e0b; }
+.hero-terminal-dots i:nth-child(3) { background: #10b981; }
+
+.hero-terminal-filename {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-terminal-muted);
+}
+
+.hero-terminal-body {
+  flex: 1 1 0;
+  margin: 0;
+  padding: 20px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow: hidden;
+}
+
+.hero-terminal-line.is-comment { color: var(--color-terminal-comment); }
+.hero-terminal-line.is-import { color: var(--color-terminal-import); }
+.hero-terminal-line.is-keyword { color: var(--color-terminal-keyword); }
+.hero-terminal-line.is-statement { color: var(--color-terminal-string); }
+.hero-terminal-line.is-assert { color: var(--color-warning); }
+
+.hero-terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  background: #38bdf8;
+  animation: hero-cursor-blink 1s steps(1) infinite;
+}
+
+@keyframes hero-cursor-blink { 50% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-terminal-cursor { animation: none; }
+}
+
+@media (width <= 1100px) {
+  .hero.block { flex-direction: column; }
+  .hero-terminal { width: 100%; }
+}
+
+@media (width <= 600px) {
+  .hero-copy h1 { font-size: 36px; }
+  .hero-subheading { font-size: 18px; }
 }
