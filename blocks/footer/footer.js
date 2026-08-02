@@ -1,20 +1,54 @@
 import { getMetadata } from '../../scripts/aem.js';
-import { loadFragment } from '../fragment/fragment.js';
 
 /**
- * loads and decorates the footer
- * @param {Element} block The footer block element
+ * Loads the /footer fragment and decorates it into copyright + social list.
+ * @param {HTMLElement} block
  */
 export default async function decorate(block) {
-  // load footer as fragment
-  const footerMeta = getMetadata('footer');
-  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
-  const fragment = await loadFragment(footerPath);
+  const footerPath = getMetadata('footer') || '/footer';
+  const resp = await fetch(`${footerPath}.plain.html`);
+  if (!resp.ok) {
+    // eslint-disable-next-line no-console
+    console.warn(`footer: could not load footer content from ${footerPath}`);
+    return;
+  }
+  const html = await resp.text();
+  const wrap = document.createElement('div');
+  wrap.innerHTML = html;
 
-  // decorate footer DOM
-  block.textContent = '';
-  const footer = document.createElement('div');
-  while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
+  const copyEl = wrap.querySelector('p');
+  const copyright = document.createElement('p');
+  copyright.className = 'footer-copyright';
+  copyright.textContent = copyEl?.textContent?.trim() || '';
 
-  block.append(footer);
+  const list = wrap.querySelector('ul');
+  if (list) {
+    list.className = 'footer-social';
+    const links = [...list.querySelectorAll('a')];
+    if (links.length < list.children.length) {
+      // eslint-disable-next-line no-console
+      console.warn('footer: one or more social items are plain text, not links. '
+        + 'Hyperlink them in the /footer document for them to work as links.');
+    }
+    links.forEach((a, i) => {
+      const li = a.parentElement;
+      const hasSecondaryMarker = li.textContent.includes('(secondary)');
+      if (hasSecondaryMarker) {
+        // Strip the "(secondary)" marker from surrounding text nodes only -
+        // never overwrite li.textContent directly, that would destroy the
+        // <a> element itself (this was the actual bug: it silently deleted
+        // the links on every render, even when no marker was present).
+        [...li.childNodes].forEach((node) => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            node.textContent = node.textContent.replace('(secondary)', '').trim();
+          }
+        });
+      }
+      if (i === 0 && !hasSecondaryMarker) a.classList.add('is-primary');
+    });
+  }
+
+  // IMPORTANT: replaceChildren (not append) - clears the block's original
+  // empty placeholder div left over from the synthetic auto-block creation.
+  block.replaceChildren(copyright, ...(list ? [list] : []));
 }

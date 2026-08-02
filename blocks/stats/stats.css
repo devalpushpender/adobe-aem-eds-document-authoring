@@ -1,0 +1,141 @@
+.stats.block {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: var(--section-padding-block) var(--section-padding-inline);
+  background: var(--color-surface-muted);
+}
+
+.stats-header h2,
+.hero-copy h1 { font-family: var(--font-heading); }
+
+.stats-header h2 {
+  margin: 0 0 8px;
+  font-weight: 700;
+  font-size: 36px;
+  color: var(--color-ink-900);
+}
+
+.stats-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--color-brand-blue);
+}
+
+.rule {
+  width: 40px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--color-brand-blue);
+  flex: 0 0 auto;
+}
+
+.stats-body {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+}
+
+.stats.block.cards-left .stats-body { flex-direction: row-reverse; }
+
+.stats-copy {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.stats-copy .lead {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--color-ink-900);
+  margin: 0;
+}
+
+.stats-copy p:not(.lead) {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-ink-600);
+  margin: 0;
+}
+
+.stats-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 400px;
+  max-width: 100%;
+  flex: 0 0 auto;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background: var(--color-brand-blue-tint);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--color-brand-blue);
+  flex: 0 0 auto;
+}
+
+.stat-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+.stat-text {
+  min-width: 0;
+}
+
+.stat-value {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--color-ink-900);
+}
+
+.stat-label {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-ink-900);
+}
+
+.stat-sub {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-ink-600);
+}
+
+@media (width <= 900px) {
+  .stats-body { flex-direction: column; }
+  .stats.block.cards-left .stats-body { flex-direction: column; }
+  .stats-cards { width: 100%; }
+}

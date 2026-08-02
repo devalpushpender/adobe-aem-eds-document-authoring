@@ -1,0 +1,183 @@
+.skills.block {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: var(--section-padding-block) var(--section-padding-inline);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.skills-header h2,
+.section-subtitle { font-family: var(--font-heading); }
+
+.skills-header h2 {
+  margin: 0 0 8px;
+  font-weight: 700;
+  font-size: 36px;
+  color: var(--color-ink-900);
+}
+
+.section-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--color-brand-blue);
+}
+
+/* Generic carousel primitives - reused by skills & achievements.
+   IMPORTANT: overflow: hidden here is what keeps the carousel from
+   blowing out page width - without it every slide lays out side by
+   side and the whole page gets a horizontal scrollbar. */
+.carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 24px;
+  transition: transform .4s ease-in-out;
+  will-change: transform;
+}
+
+.carousel-slide { flex-shrink: 0; }
+
+.carousel-controls {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 55px;
+  background: inherit;
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.carousel-arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.carousel-dots button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: #cbd5e1;
+  transition: all .2s ease;
+}
+
+.carousel-arrows button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-ink-600);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.carousel-arrows button:disabled {
+  opacity: .3;
+  cursor: not-allowed;
+}
+
+.carousel-dots button:hover {
+  background: #94a3b8;
+}
+
+.carousel-arrows button:hover:not(:disabled) {
+  background: var(--color-brand-blue-tint);
+  border-color: var(--color-brand-blue);
+}
+
+.carousel-dots button[aria-current="true"] {
+  width: 24px;
+  border-radius: 4px;
+  background: var(--color-brand-blue);
+}
+
+/* Skill card */
+.skill-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.skill-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.skill-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 20px;
+  background: var(--color-brand-blue-tint);
+  flex: 0 0 auto;
+}
+
+.skill-icon img {
+  width: 20px;
+  height: 20px;
+}
+
+.skill-card-head p {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--color-ink-900);
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.skill-tags li {
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--color-ink-600);
+}
+
+@media (width <= 600px) {
+  .skills-header h2 { font-size: 28px; }
+}

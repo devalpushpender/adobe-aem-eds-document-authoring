@@ -16,6 +16,8 @@
   --light-color: #f8f8f8;
   --dark-color: #505050;
   --text-color: #131313;
+  --terminal-color: #0F172A;
+  --terminal-header-color: #1E293B;
   --link-color: #3b63fb;
   --link-hover-color: #1d3ecf;
 
@@ -38,6 +40,48 @@
 
   /* nav height */
   --nav-height: 64px;
+
+  /* ==========================================================================
+     Design tokens for the custom portfolio blocks (hero, stats, skills,
+     timeline, projects, achievements, education, contact, header, footer).
+     ========================================================================== */
+
+  /* Color */
+  --color-brand-blue: #2563eb;
+  --color-brand-blue-hover: #1d4ed8;
+  --color-brand-blue-active: #1e40af;
+  --color-brand-blue-tint: #eff6ff;
+  --color-ink-900: #0f172a;      /* headings */
+  --color-ink-600: #475569;      /* body text */
+  --color-ink-slate-500: #64748b;
+  --color-surface: #fff;
+  --color-surface-muted: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-purple: #8b5cf6;
+  --color-terminal-bg: #0f172a;
+  --color-terminal-header: #1e293b;
+  --color-terminal-border: #334155;
+  --color-terminal-muted: #94a3b8;
+  --color-terminal-text: #e2e8f0;
+  --color-terminal-comment: #64748b;
+  --color-terminal-string: #10b981;
+  --color-terminal-keyword: #f472b6;
+  --color-terminal-import: #38bdf8;
+
+  /* Type */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Geist', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+
+  /* Radius / spacing shared across cards & buttons */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --section-padding-inline: 64px;
+  --section-padding-block: 32px;
 }
 
 /* fallback fonts */
@@ -67,6 +111,20 @@
     --heading-font-size-m: 22px;
     --heading-font-size-s: 20px;
     --heading-font-size-xs: 18px;
+  }
+}
+
+@media (width <= 900px) {
+  :root {
+    --section-padding-inline: 32px;
+    --section-padding-block: 48px;
+  }
+}
+
+@media (width <= 600px) {
+  :root {
+    --section-padding-inline: 20px;
+    --section-padding-block: 40px;
   }
 }
 
@@ -137,7 +195,7 @@ pre {
 pre {
   padding: 16px;
   border-radius: 8px;
-  background-color: var(--light-color);
+  background-color: var(--terminal-color);
   overflow-x: auto;
   white-space: pre;
 }
@@ -301,19 +359,13 @@ main > .section {
 }
 
 main > .section > div {
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 24px;
+  max-width: none;
+  margin: 0;
+  padding: 0;
 }
 
 main > .section:first-of-type {
   margin-top: 0;
-}
-
-@media (width >= 900px) {
-  main > .section > div {
-    padding: 0 32px;
-  }
 }
 
 /* section metadata */

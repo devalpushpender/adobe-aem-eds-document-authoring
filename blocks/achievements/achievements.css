@@ -1,0 +1,50 @@
+.achievements.block {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: var(--section-padding-block) var(--section-padding-inline);
+  background: var(--color-surface-muted);
+}
+
+.achievements-header h2 {
+  margin: 0 0 8px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 36px;
+  color: var(--color-ink-900);
+}
+
+.achievement-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.achievement-value {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 40px;
+  color: var(--color-brand-blue);
+}
+
+.achievement-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--color-ink-900);
+}
+
+.achievement-desc {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-ink-600);
+}
