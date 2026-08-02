@@ -2,10 +2,10 @@ header .header.block {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  height: 72px;
-  padding: 0 var(--section-padding-inline);
-  background: var(--color-surface);
+  gap: 32px;
+  height: 120px;
+  padding: 0 64px;
+  background: #e8f4f8;
   border-bottom: 1px solid var(--color-border);
   position: fixed;
   inset-block-start: 0;
@@ -13,13 +13,20 @@ header .header.block {
   z-index: 100;
 }
 
-/* spacer so fixed header doesn't cover the hero - added once in scripts.js
-   or as a static block placed right after header in the page template */
+/* Pushes page content below the fixed header. aem-boilerplate's default
+   header-wrapper doesn't reserve this space on its own - add this rule
+   once, globally, e.g. in styles.css (kept here too so it ships with the
+   block, but de-dupe if you already set it elsewhere). */
+main {
+  margin-block-start: 72px;
+}
+
 .header-brand {
   display: flex;
   align-items: center;
   gap: 12px;
   flex: 0 0 auto;
+  min-width: 0;
 }
 
 .header-logo {
@@ -52,26 +59,42 @@ header .header.block {
   white-space: nowrap;
 }
 
+.header-nav {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
 .header-nav ul {
   display: flex;
-  gap: 32px;
+  gap: 28px;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+.header-nav li { display: flex; }
+
 .header-nav a {
+  display: inline-block;
+  padding: 8px 2px;
   font-family: var(--font-body);
   font-weight: 500;
   font-size: 14px;
   color: var(--color-ink-600);
   text-decoration: none;
+  white-space: nowrap;
   transition: color .2s ease;
 }
 
 .header-nav a:hover,
 .header-nav a:focus-visible {
   color: var(--color-brand-blue);
+}
+
+.header-cta {
+  flex: 0 0 auto;
 }
 
 .header-cta .button {
@@ -108,6 +131,8 @@ header .header.block {
 }
 
 @media (width <= 900px) {
+  header .header.block { padding: 0 20px; }
+
   .header-nav { display: none; }
   .header-cta { display: none; }
   .header-nav-toggle { display: flex; }
@@ -122,6 +147,7 @@ header .header.block {
   header .header.block.nav-open .header-cta {
     display: flex;
     flex-basis: 100%;
+    justify-content: flex-start;
   }
 
   header .header.block.nav-open .header-nav ul {
@@ -129,4 +155,6 @@ header .header.block {
     gap: 16px;
     padding-block-start: 16px;
   }
+
+  main { margin-block-start: 64px; }
 }

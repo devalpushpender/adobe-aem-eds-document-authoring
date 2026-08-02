@@ -4,6 +4,88 @@
  * value | title | description.
  * @param {HTMLElement} block
  */
+function getVisibleCount(block) {
+  if (block.classList.contains('visible-2')) return 2;
+  if (block.classList.contains('visible-4')) return 4;
+  return 3;
+}
+
+function initCarousel(carousel, desktopVisible = 3) {
+  const track = carousel.querySelector('.carousel-track');
+  const slides = [...track.children];
+  let index = 0;
+
+  const controls = document.createElement('div');
+  controls.className = 'carousel-controls';
+  const dots = document.createElement('div');
+  dots.className = 'carousel-dots';
+  const arrows = document.createElement('div');
+  arrows.className = 'carousel-arrows';
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'carousel-prev';
+  prevBtn.setAttribute('aria-label', 'Previous');
+  prevBtn.textContent = '‹';
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'carousel-next';
+  nextBtn.setAttribute('aria-label', 'Next');
+  nextBtn.textContent = '›';
+  arrows.append(prevBtn, nextBtn);
+  controls.append(dots, arrows);
+  carousel.append(controls);
+
+  const visibleCount = () => {
+    if (window.innerWidth <= 600) return 1;
+    if (window.innerWidth <= 900) return Math.min(2, desktopVisible);
+    return desktopVisible;
+  };
+
+  let maxIndex = Math.max(0, slides.length - visibleCount());
+
+  /* eslint-disable no-use-before-define */
+  function goTo(i) {
+    index = Math.max(0, Math.min(i, maxIndex));
+    render();
+  }
+
+  function buildDots() {
+    dots.innerHTML = '';
+    for (let i = 0; i <= maxIndex; i += 1) {
+      const dot = document.createElement('button');
+      dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+      if (i === index) dot.setAttribute('aria-current', 'true');
+      dot.addEventListener('click', () => goTo(i));
+      dots.append(dot);
+    }
+  }
+
+  function render() {
+    const vc = visibleCount();
+    maxIndex = Math.max(0, slides.length - vc);
+    index = Math.min(index, maxIndex);
+    const gap = 24;
+    track.style.transform = `translateX(calc(-${index} * (100% / ${vc} + ${gap / vc}px)))`;
+    slides.forEach((slide) => {
+      slide.style.width = `calc((100% - ${(vc - 1) * gap}px) / ${vc})`;
+    });
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === maxIndex;
+    buildDots();
+  }
+
+  prevBtn.addEventListener('click', () => goTo(index - 1));
+  nextBtn.addEventListener('click', () => goTo(index + 1));
+  window.addEventListener('resize', render);
+
+  let touchStartX = 0;
+  track.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', (e) => {
+    const delta = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(delta) < 40) return;
+    goTo(delta < 0 ? index + 1 : index - 1);
+  }, { passive: true });
+
+  render();
+}
 export default function decorate(block) {
   const rows = [...block.children];
   const [titleRow, subtitleRow, ...cardRows] = rows;
@@ -44,89 +126,4 @@ export default function decorate(block) {
   block.replaceChildren(header, carousel);
 
   initCarousel(carousel, getVisibleCount(block));
-}
-
-function getVisibleCount(block) {
-  if (block.classList.contains('visible-2')) return 2;
-  if (block.classList.contains('visible-4')) return 4;
-  return 3;
-}
-
-/**
- * Generic slide-carousel behavior (duplicated from skills.js by design —
- * see skills.md for the rationale, and how to DRY it up if preferred).
- * @param {HTMLElement} carousel
- * @param {number} desktopVisible
- */
-function initCarousel(carousel, desktopVisible = 3) {
-  const track = carousel.querySelector('.carousel-track');
-  const slides = [...track.children];
-  let index = 0;
-
-  const controls = document.createElement('div');
-  controls.className = 'carousel-controls';
-  const dots = document.createElement('div');
-  dots.className = 'carousel-dots';
-  const arrows = document.createElement('div');
-  arrows.className = 'carousel-arrows';
-  const prevBtn = document.createElement('button');
-  prevBtn.className = 'carousel-prev';
-  prevBtn.setAttribute('aria-label', 'Previous');
-  prevBtn.textContent = '‹';
-  const nextBtn = document.createElement('button');
-  nextBtn.className = 'carousel-next';
-  nextBtn.setAttribute('aria-label', 'Next');
-  nextBtn.textContent = '›';
-  arrows.append(prevBtn, nextBtn);
-  controls.append(dots, arrows);
-  carousel.append(controls);
-
-  const visibleCount = () => {
-    if (window.innerWidth <= 600) return 1;
-    if (window.innerWidth <= 900) return Math.min(2, desktopVisible);
-    return desktopVisible;
-  };
-
-  let maxIndex = Math.max(0, slides.length - visibleCount());
-
-  const buildDots = () => {
-    dots.innerHTML = '';
-    for (let i = 0; i <= maxIndex; i += 1) {
-      const dot = document.createElement('button');
-      dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-      if (i === index) dot.setAttribute('aria-current', 'true');
-      dot.addEventListener('click', () => goTo(i));
-      dots.append(dot);
-    }
-  };
-
-  const render = () => {
-    const vc = visibleCount();
-    maxIndex = Math.max(0, slides.length - vc);
-    index = Math.min(index, maxIndex);
-    const gap = 24;
-    track.style.transform = `translateX(calc(-${index} * (100% / ${vc} + ${gap / vc}px)))`;
-    slides.forEach((slide) => {
-      slide.style.width = `calc((100% - ${(vc - 1) * gap}px) / ${vc})`;
-    });
-    prevBtn.disabled = index === 0;
-    nextBtn.disabled = index === maxIndex;
-    buildDots();
-  };
-
-  const goTo = (i) => { index = Math.max(0, Math.min(i, maxIndex)); render(); };
-
-  prevBtn.addEventListener('click', () => goTo(index - 1));
-  nextBtn.addEventListener('click', () => goTo(index + 1));
-  window.addEventListener('resize', render);
-
-  let touchStartX = 0;
-  track.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener('touchend', (e) => {
-    const delta = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(delta) < 40) return;
-    goTo(delta < 0 ? index + 1 : index - 1);
-  }, { passive: true });
-
-  render();
 }

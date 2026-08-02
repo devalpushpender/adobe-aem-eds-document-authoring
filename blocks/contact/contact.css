@@ -140,11 +140,28 @@ a.contact-value:hover { color: var(--color-brand-blue); }
   transition: background-color .2s ease;
 }
 
-.contact-form button[type="submit"]:hover:not(:disabled) { background: var(--color-brand-blue-hover); }
-.contact-form button[type="submit"]:disabled { opacity: .7; cursor: not-allowed; }
+.contact-form button[type="submit"]:disabled {
+  opacity: .7;
+  cursor: not-allowed;
+}
 
-.contact-form-error { margin: 0; font-family: var(--font-body); font-size: 13px; color: #dc2626; }
-.contact-form-success { margin: 0; font-family: var(--font-body); font-size: 15px; color: var(--color-ink-900); }
+.contact-form button[type="submit"]:hover:not(:disabled) {
+  background: var(--color-brand-blue-hover);
+}
+
+.contact-form-error {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: #dc2626;
+}
+
+.contact-form-success {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--color-ink-900);
+}
 
 @media (width <= 900px) {
   .contact.block { flex-direction: column; }

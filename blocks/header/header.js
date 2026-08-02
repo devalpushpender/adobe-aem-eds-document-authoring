@@ -1,12 +1,15 @@
 import { getMetadata } from '../../scripts/aem.js';
-import { loadFragment } from '../fragment/fragment.js';
 
-// media query match that indicates mobile/tablet width
-const isDesktop = window.matchMedia('(min-width: 900px)');
 /**
  * Loads the /nav fragment (configurable via header metadata) and decorates
  * it into brand / nav-links / CTA regions.
- * @param {Element} block
+ *
+ * Robust to how the /nav doc was authored: works whether links sit inside a
+ * <ul>, or are written inline in a single paragraph (all that matters is
+ * that they are real <a> links). The LAST link found is treated as the CTA
+ * button, everything before it as nav links, and any leftover plain text
+ * (with links stripped out) as the brand name.
+ * @param {HTMLElement} block
  */
 export default async function decorate(block) {
   const navPath = getMetadata('nav') || '/nav';
@@ -20,47 +23,64 @@ export default async function decorate(block) {
   const nav = document.createElement('div');
   nav.innerHTML = html;
 
-  // First paragraph (with or without an image) = brand
+  const allLinks = [...nav.querySelectorAll('a')];
+  const ctaLink = allLinks.pop();
+  const navLinkEls = allLinks;
+
+  // Brand: leading image (if any) + any plain text left after stripping links
+  const img = nav.querySelector('img');
+  const firstEl = nav.children[0];
+  let brandText = '';
+  if (firstEl) {
+    const clone = firstEl.cloneNode(true);
+    clone.querySelectorAll('a').forEach((a) => a.remove());
+    brandText = clone.textContent.trim();
+  }
+
   const brandWrap = document.createElement('div');
   brandWrap.className = 'header-brand';
-  const firstEl = nav.children[0];
-  const img = firstEl?.querySelector('img');
   const logo = document.createElement('span');
   logo.className = 'header-logo';
-  if (img) {
-    logo.replaceChildren(img);
-  } else {
-    logo.textContent = 'PS';
-  }
+  if (img) logo.append(img);
+  else logo.textContent = 'PS';
   const name = document.createElement('p');
   name.className = 'header-name';
-  name.textContent = firstEl?.textContent?.trim() || 'Your Name';
+  name.textContent = brandText || 'Your Name';
   brandWrap.append(logo, name);
-  firstEl?.remove();
 
-  // First <ul> found = nav links
-  const list = nav.querySelector('ul');
   const navLinks = document.createElement('nav');
   navLinks.className = 'header-nav';
   navLinks.setAttribute('aria-label', 'Primary');
-  if (list) {
-    list.querySelectorAll('a').forEach((a) => {
-      a.removeAttribute('title');
-    });
-    navLinks.append(list);
-    list.remove();
-  }
+  const ul = document.createElement('ul');
+  navLinkEls.forEach((a) => {
+    a.removeAttribute('title');
+    const li = document.createElement('li');
+    li.append(a);
+    ul.append(li);
+  });
+  navLinks.append(ul);
 
-  // Remaining paragraph with a single link = CTA button
   const ctaWrap = document.createElement('div');
   ctaWrap.className = 'header-cta';
-  const ctaLink = nav.querySelector('a');
   if (ctaLink) {
+    ctaLink.removeAttribute('title');
     ctaLink.className = 'button';
     ctaWrap.append(ctaLink);
   }
 
-  block.append(brandWrap, navLinks, ctaWrap);
+  const toggle = document.createElement('button');
+  toggle.className = 'header-nav-toggle';
+  toggle.setAttribute('aria-label', 'Toggle navigation');
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.innerHTML = '<span></span><span></span><span></span>';
+  toggle.addEventListener('click', () => {
+    const open = block.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+
+  // IMPORTANT: replaceChildren (not append) - clears the block's original
+  // empty placeholder div left over from the synthetic auto-block creation.
+  block.replaceChildren(brandWrap, navLinks, ctaWrap, toggle);
 
   // Smooth-scroll for in-page anchors, offset by header height
   block.addEventListener('click', (e) => {
@@ -74,16 +94,4 @@ export default async function decorate(block) {
     window.scrollTo({ top, behavior: 'smooth' });
     block.classList.remove('nav-open');
   });
-
-  // Mobile nav toggle
-  const toggle = document.createElement('button');
-  toggle.className = 'header-nav-toggle';
-  toggle.setAttribute('aria-label', 'Toggle navigation');
-  toggle.setAttribute('aria-expanded', 'false');
-  toggle.innerHTML = '<span></span><span></span><span></span>';
-  toggle.addEventListener('click', () => {
-    const open = block.classList.toggle('nav-open');
-    toggle.setAttribute('aria-expanded', String(open));
-  });
-  block.append(toggle);
 }

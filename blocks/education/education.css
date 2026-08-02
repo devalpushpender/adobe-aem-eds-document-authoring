@@ -38,7 +38,10 @@
   flex: 0 0 auto;
 }
 
-.education-icon img { width: 32px; height: 32px; }
+.education-icon img {
+  width: 32px;
+  height: 32px;
+}
 
 .education-institution {
   margin: 0;
@@ -64,5 +67,9 @@
 }
 
 @media (width <= 600px) {
-  .education-entry { flex-direction: column; align-items: flex-start; text-align: left; }
+  .education-entry {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
 }
